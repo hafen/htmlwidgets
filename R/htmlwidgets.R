@@ -23,7 +23,7 @@ print.htmlwidget <- function(x, ..., view = interactive()) {
   }
 
   # call html_print with the viewer
-  html_print(htmltools::as.tags(x, standalone=TRUE), viewer = if (view) viewerFunc)
+  html_print(htmltools::as.tags(x, standalone=TRUE), www_dir = x$www_dir, viewer = if (view) viewerFunc)
 
   # return value
   invisible(x)
@@ -31,7 +31,7 @@ print.htmlwidget <- function(x, ..., view = interactive()) {
 
 #' @export
 print.suppress_viewer <- function(x, ..., view = interactive()) {
-  html_print(htmltools::as.tags(x, standalone=TRUE), viewer = if (view) browseURL)
+  html_print(htmltools::as.tags(x, standalone=TRUE), www_dir = x$www_dir, viewer = if (view) browseURL)
   invisible(x)
 }
 
@@ -294,6 +294,7 @@ widget_data <- function(x, id, ...){
 #' @param preRenderHook A function to be run on the widget, just prior to
 #'   rendering. It accepts the entire widget object as input, and should return
 #'   a modified widget object.
+#' @param www_dir temporary directory to print htmlwidget output to (optional)
 #'
 #' @return An object of class \code{htmlwidget} that will intelligently print
 #'   itself into HTML in a variety of contexts including the R console, within R
@@ -307,7 +308,8 @@ createWidget <- function(name,
                          package = name,
                          dependencies = NULL,
                          elementId = NULL,
-                         preRenderHook = NULL) {
+                         preRenderHook = NULL,
+                         www_dir = NULL) {
   # Turn single dependency object into list of dependencies, if necessary
   if (inherits(dependencies, "html_dependency"))
     dependencies <- list(dependencies)
@@ -319,6 +321,7 @@ createWidget <- function(name,
          dependencies = dependencies,
          elementId = elementId,
          preRenderHook = preRenderHook,
+         www_dir = www_dir,
          jsHooks = list()),
     class = c(name,
               if (sizingPolicy$viewer$suppress) "suppress_viewer",

@@ -6,7 +6,8 @@
 \usage{
 createWidget(name, x, width = NULL, height = NULL,
   sizingPolicy = htmlwidgets::sizingPolicy(), package = name,
-  dependencies = NULL, elementId = NULL, preRenderHook = NULL)
+  dependencies = NULL, elementId = NULL, preRenderHook = NULL,
+  www_dir = NULL)
 }
 \arguments{
 \item{name}{Widget name (should match the base name of the YAML and
@@ -45,6 +46,8 @@ needs to explicitly discover and interact with a specific widget instance.}
 \item{preRenderHook}{A function to be run on the widget, just prior to
 rendering. It accepts the entire widget object as input, and should return
 a modified widget object.}
+
+\item{www_dir}{temporary directory to print htmlwidget output to (optional)}
 }
 \value{
 An object of class \code{htmlwidget} that will intelligently print
